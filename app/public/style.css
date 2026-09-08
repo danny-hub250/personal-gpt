@@ -217,6 +217,13 @@ html, body {
   z-index: 100;
 }
 
+/* 이 클래스의 display:flex가 명시적 선언이라 [hidden]의 기본 display:none을
+   덮어써 버려서(동일 명시도, 작성자 스타일시트가 우선) hidden 속성만으로는
+   안 숨겨진다 - 여기서 display:none을 명시적으로 다시 걸어줘야 실제로 닫힘. */
+.modal-overlay[hidden] {
+  display: none;
+}
+
 .modal {
   width: 100%;
   max-width: 560px;
