@@ -1,0 +1,32 @@
+name: Deploy chat app to Azure App Service
+
+# 수동 실행 전용. main에 push되어도 자동 배포되지 않도록 workflow_dispatch만 사용한다.
+# (자동 배포를 원하면 아래 push 트리거 주석을 해제하세요.)
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+  #   paths: ["app/**"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm ci
+
+      # Azure Portal > Web App > 게시 프로필 다운로드 후 GitHub Secrets에
+      # AZURE_WEBAPP_PUBLISH_PROFILE 이름으로 등록해야 동작합니다.
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: danny-personal-gpt-dev-app
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: app

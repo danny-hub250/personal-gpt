@@ -1,0 +1,10 @@
+location = "koreacentral"
+
+tags = {
+  owner = "personal-gpt"
+  env   = "dev"
+}
+
+# 개인 학습용 App Service Plan SKU. 상시 접속이 필요 없다면 F1(무료)도 가능하지만
+# always_on을 지원하지 않아 첫 요청이 느릴 수 있음.
+app_service_sku = "B1"

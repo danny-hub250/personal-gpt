@@ -1,0 +1,19 @@
+{
+  "name": "personal-gpt",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Azure AI Foundry(gpt-5.6 계열)를 사용하는 ChatGPT 스타일 채팅 웹앱",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.4.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "openai": "^4.68.0"
+  }
+}

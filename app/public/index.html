@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>personal-gpt</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button id="newChatBtn" class="new-chat-btn">+ 새 대화</button>
+
+      <div class="model-picker">
+        <label for="modelSelect">모델</label>
+        <select id="modelSelect"></select>
+      </div>
+
+      <div class="sidebar-footer">
+        Azure AI Foundry 기반<br />personal-gpt
+      </div>
+    </aside>
+
+    <main class="chat">
+      <div id="messages" class="messages">
+        <div class="empty-state" id="emptyState">
+          무엇을 도와드릴까요?
+        </div>
+      </div>
+
+      <form id="chatForm" class="input-area">
+        <textarea
+          id="promptInput"
+          placeholder="메시지를 입력하세요..."
+          rows="1"
+        ></textarea>
+        <button type="submit" id="sendBtn">전송</button>
+      </form>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
