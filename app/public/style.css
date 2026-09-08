@@ -53,6 +53,15 @@ html, body {
   background: var(--panel);
 }
 
+.instructions-btn {
+  margin-top: 8px;
+}
+
+.instructions-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .model-picker {
   margin-top: 16px;
   display: flex;
@@ -195,4 +204,92 @@ html, body {
     text-align: center;
     padding: 10px 4px;
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.modal-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.modal textarea {
+  width: 100%;
+  resize: vertical;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.modal-actions-right {
+  display: flex;
+  gap: 8px;
+}
+
+.modal .btn-primary,
+.modal .btn-secondary {
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+}
+
+.modal .btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.modal .btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.modal .btn-secondary {
+  background: transparent;
+  color: var(--text);
+}
+
+.modal .btn-secondary:hover {
+  background: var(--bg);
 }

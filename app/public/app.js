@@ -6,7 +6,67 @@ const sendBtn = document.getElementById("sendBtn");
 const modelSelect = document.getElementById("modelSelect");
 const newChatBtn = document.getElementById("newChatBtn");
 
+const instructionsBtn = document.getElementById("instructionsBtn");
+const instructionsModal = document.getElementById("instructionsModal");
+const instructionsInput = document.getElementById("instructionsInput");
+const instructionsSaveBtn = document.getElementById("instructionsSaveBtn");
+const instructionsCancelBtn = document.getElementById("instructionsCancelBtn");
+const instructionsClearBtn = document.getElementById("instructionsClearBtn");
+
+const INSTRUCTIONS_KEY = "personal-gpt:instructions";
+
 let history = []; // { role: "user" | "assistant", content: string }[]
+
+function loadInstructions() {
+  try {
+    return localStorage.getItem(INSTRUCTIONS_KEY) || "";
+  } catch {
+    return ""; // 프라이빗 브라우징 등으로 접근이 막힌 경우 지침 없이 동작.
+  }
+}
+
+function saveInstructions(value) {
+  try {
+    if (value) {
+      localStorage.setItem(INSTRUCTIONS_KEY, value);
+    } else {
+      localStorage.removeItem(INSTRUCTIONS_KEY);
+    }
+  } catch {
+    // 저장 실패해도 현재 세션에서는 계속 사용 가능하도록 무시.
+  }
+}
+
+function updateInstructionsBtnState() {
+  instructionsBtn.classList.toggle("active", Boolean(loadInstructions()));
+}
+
+function openInstructionsModal() {
+  instructionsInput.value = loadInstructions();
+  instructionsModal.hidden = false;
+  instructionsInput.focus();
+}
+
+function closeInstructionsModal() {
+  instructionsModal.hidden = true;
+}
+
+instructionsBtn.addEventListener("click", openInstructionsModal);
+instructionsCancelBtn.addEventListener("click", closeInstructionsModal);
+instructionsClearBtn.addEventListener("click", () => {
+  instructionsInput.value = "";
+});
+instructionsSaveBtn.addEventListener("click", () => {
+  saveInstructions(instructionsInput.value.trim());
+  updateInstructionsBtnState();
+  closeInstructionsModal();
+});
+instructionsModal.addEventListener("click", (e) => {
+  if (e.target === instructionsModal) closeInstructionsModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !instructionsModal.hidden) closeInstructionsModal();
+});
 
 function escapeHtml(str) {
   return str
@@ -62,10 +122,15 @@ async function sendMessage(text) {
 
   sendBtn.disabled = true;
   try {
+    const instructions = loadInstructions();
+    const payloadMessages = instructions
+      ? [{ role: "system", content: instructions }, ...history]
+      : history;
+
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history, deployment: modelSelect.value }),
+      body: JSON.stringify({ messages: payloadMessages, deployment: modelSelect.value }),
     });
 
     if (!res.ok || !res.body) {
@@ -137,3 +202,4 @@ newChatBtn.addEventListener("click", () => {
 });
 
 loadConfig();
+updateInstructionsBtnState();
