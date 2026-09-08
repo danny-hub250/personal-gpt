@@ -38,7 +38,13 @@ const client = createClient();
 
 const app = express();
 app.use(express.json({ limit: "2mb" }));
-app.use(express.static(path.join(__dirname, "public")));
+// 정적 파일(HTML/JS/CSS)을 브라우저가 무기한 캐시하지 않도록 강제. 배포 직후에도
+// 이전 버전 스크립트가 남아 새 기능이 반영 안 된 것처럼 보이는 문제를 방지한다.
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res) => res.setHeader("Cache-Control", "no-cache"),
+  })
+);
 
 // 프런트엔드가 사용할 수 있는 모델(배포) 목록 제공.
 app.get("/api/config", (_req, res) => {

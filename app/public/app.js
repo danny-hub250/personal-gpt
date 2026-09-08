@@ -57,9 +57,22 @@ instructionsClearBtn.addEventListener("click", () => {
   instructionsInput.value = "";
 });
 instructionsSaveBtn.addEventListener("click", () => {
-  saveInstructions(instructionsInput.value.trim());
+  const value = instructionsInput.value.trim();
+  saveInstructions(value);
   updateInstructionsBtnState();
-  closeInstructionsModal();
+
+  // localStorage에 실제로 반영됐는지 즉시 재확인 후 눈에 보이는 피드백을 준다.
+  // (프라이빗 브라우징 등으로 저장이 조용히 실패하는 경우를 사용자가 알 수 있게 함)
+  const savedOk = loadInstructions() === value;
+  const originalLabel = instructionsSaveBtn.textContent;
+  instructionsSaveBtn.textContent = savedOk ? "저장됨 ✓" : "저장 실패 ⚠";
+  instructionsSaveBtn.disabled = true;
+
+  setTimeout(() => {
+    instructionsSaveBtn.textContent = originalLabel;
+    instructionsSaveBtn.disabled = false;
+    closeInstructionsModal();
+  }, 700);
 });
 instructionsModal.addEventListener("click", (e) => {
   if (e.target === instructionsModal) closeInstructionsModal();
