@@ -25,14 +25,16 @@ module "foundry" {
   tags                = var.tags
 
   model_deployments = {
-    "gpt-5.6" = {
-      model_name    = "gpt-5.6"
+    # "gpt-5.6", "gpt-5.6-astra"는 실재하지 않는 모델명이라 실제 사용 가능한 모델로 대체함
+    # (az cognitiveservices model list --location eastus2 로 확인).
+    "gpt-5.6-sol" = {
+      model_name    = "gpt-5.6-sol"
       model_version = "2026-07-09"
       capacity      = 1000
     }
-    "gpt-5.6-astra" = {
-      model_name    = "gpt-5.6-astra"
-      model_version = "2026-07-09"
+    "gpt-6-astra" = {
+      model_name    = "gpt-6-astra"
+      model_version = "2026-09-03"
       capacity      = 1000
     }
   }
@@ -52,7 +54,9 @@ module "webapp" {
   app_settings = {
     # API Key 없이 Managed Identity(azure-identity DefaultAzureCredential)로 인증한다.
     "AZURE_OPENAI_ENDPOINT"    = module.foundry.endpoint
-    "AZURE_OPENAI_API_VERSION" = "2026-01-01-preview"
+    # "2026-01-01-preview"는 실재하지 않는 api-version이라 404를 반환함(services.ai.azure.com에서 직접 검증).
+    # 2025-04-01-preview까지는 정상 라우팅 확인됨 - GA 버전인 2024-10-21을 사용.
+    "AZURE_OPENAI_API_VERSION" = "2024-10-21"
     # 프런트엔드 모델 선택 드롭다운에 노출할 배포 이름 목록 (콤마 구분).
     "AZURE_OPENAI_DEPLOYMENTS" = join(",", module.foundry.deployment_names)
   }

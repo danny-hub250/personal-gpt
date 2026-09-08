@@ -7,9 +7,9 @@ const { DefaultAzureCredential, getBearerTokenProvider } = require("@azure/ident
 
 const PORT = process.env.PORT || 8080;
 const ENDPOINT = process.env.AZURE_OPENAI_ENDPOINT;
-const API_VERSION = process.env.AZURE_OPENAI_API_VERSION || "2026-01-01-preview";
+const API_VERSION = process.env.AZURE_OPENAI_API_VERSION || "2024-10-21";
 const API_KEY = process.env.AZURE_OPENAI_API_KEY; // 로컬 개발용 대안. App Service에서는 Managed Identity 사용을 권장.
-const DEPLOYMENTS = (process.env.AZURE_OPENAI_DEPLOYMENTS || "gpt-5.6,gpt-5.6-astra")
+const DEPLOYMENTS = (process.env.AZURE_OPENAI_DEPLOYMENTS || "gpt-5.6-sol,gpt-6-astra")
   .split(",")
   .map((d) => d.trim())
   .filter(Boolean);
